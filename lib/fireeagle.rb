@@ -16,12 +16,12 @@ require File.dirname(__FILE__) + '/fireeagle/error'
 require File.dirname(__FILE__) + '/fireeagle/response'
 
 module FireEagle
-  API_SERVER = "https://fireeagle.yahooapis.com"
-  AUTH_SERVER = "https://fireeagle.yahoo.net"
+  DEFAULT_API_PREFIX = "https://fireeagle.yahooapis.com"
+  DEFAULT_AUTH_PREFIX = "https://fireeagle.yahoo.net"
   REQUEST_TOKEN_PATH = "/oauth/request_token"
   ACCESS_TOKEN_PATH  = "/oauth/access_token"
-  AUTHORIZATION_URL  = "#{AUTH_SERVER}/oauth/authorize"
-  MOBILE_AUTH_URL    = "#{AUTH_SERVER}/oauth/mobile_auth/"
+  AUTHORIZATION_PATH = "/oauth/authorize"
+  MOBILE_AUTH_PATH   = "/oauth/mobile_auth"
   USER_API_PATH      = "/api/0.1/user"
   LOOKUP_API_PATH    = "/api/0.1/lookup"
   UPDATE_API_PATH    = "/api/0.1/update"

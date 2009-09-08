@@ -3,6 +3,7 @@ module FireEagle
     # TODO add access_token=() and request_token=() methods that check whether the tokens are usable
 
     attr_reader :access_token, :request_token, :consumer, :format
+    attr_reader :api_prefix, :authorization_prefix
 
     # Initialize a FireEagle Client. Takes an options Hash.
     #
@@ -112,16 +113,29 @@ module FireEagle
     # You're done!
     def initialize(options = {})
       options = {
-        :debug  => false,
-        :format => FireEagle::FORMAT_XML
+        :debug                => false,
+        :format               => FireEagle::FORMAT_XML,
+        :api_prefix           => FireEagle::DEFAULT_API_PREFIX,
+        :authorization_prefix => FireEagle::DEFAULT_AUTH_PREFIX
       }.merge(options)
 
       # symbolize keys
       options.map do |k,v|
         options[k.to_sym] = v
       end
-      raise FireEagle::ArgumentError, "OAuth Consumer Key and Secret required" if options[:consumer_key].nil? || options[:consumer_secret].nil?
-      @consumer = OAuth::Consumer.new(options[:consumer_key], options[:consumer_secret], :site => FireEagle::API_SERVER, :authorize_url => FireEagle::AUTHORIZATION_URL)
+      if options[:consumer_key].nil? || options[:consumer_secret].nil?
+        raise FireEagle::ArgumentError, "OAuth Consumer Key and Secret required"
+      end
+
+      @api_prefix = options[:api_prefix]
+      @authorization_prefix = options[:authorization_prefix]
+
+      @consumer = OAuth::Consumer.new \
+        options[:consumer_key],
+        options[:consumer_secret],
+        :site          => api_prefix,
+        :authorize_url => authorization_prefix + AUTHORIZATION_PATH
+
       @debug    = options[:debug]
       @format   = options[:format]
       @app_id   = options[:app_id]
@@ -148,7 +162,7 @@ module FireEagle
     # Return the Fire Eagle authorization URL for your mobile application. At this URL, the User will be prompted for their request_token.
     def mobile_authorization_url
       raise FireEagle::ArgumentError, ":app_id required" if @app_id.nil?
-      "#{FireEagle::MOBILE_AUTH_URL}#{@app_id}"
+      authorization_prefix + MOBILE_AUTH_PATH + @app_id
     end
 
     # The URL the user must access to authorize this token. get_request_token must be called first. For use by web-based and desktop-based applications.

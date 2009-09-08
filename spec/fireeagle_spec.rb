@@ -12,7 +12,12 @@ describe "FireEagle" do
 
     it "should initialize an OAuth::Consumer" do
       @consumer = mock(OAuth::Consumer)
-      OAuth::Consumer.should_receive(:new).with('key', 'sekret', :site => FireEagle::API_SERVER, :authorize_url => FireEagle::AUTHORIZATION_URL).and_return(@consumer)
+      OAuth::Consumer.should_receive(:new).with(
+        'key',
+        'sekret',
+        :site          => "https://fireeagle.yahooapis.com",
+        :authorize_url => "https://fireeagle.yahoo.net/oauth/authorize"
+      ).and_return(@consumer)
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
     end
 
