@@ -33,9 +33,9 @@ module FireEagle
     element :woeid, StringWithExactMatch,    :parser => :new,    :raw => true
 
     element :_box, GeoRuby::SimpleFeatures::Geometry,   :tag => "box",
-      :namespace => "georss", :parser => :from_georss, :raw => true
+      :namespace => "http://www.georss.org/georss", :parser => :from_georss, :raw => true
     element :_point, GeoRuby::SimpleFeatures::Geometry, :tag => "point",
-      :namespace => "georss", :parser => :from_georss, :raw => true
+      :namespace => "http://www.georss.org/georss", :parser => :from_georss, :raw => true
 
     def best_guess?
       best_guess == true
